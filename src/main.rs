@@ -188,6 +188,11 @@ async fn autocomplete(
     };
 }
 
+#[get("/up")]
+async fn healthcheck() -> HttpResponse {
+    HttpResponse::NoContent().finish()
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     use actix_web::{App, HttpServer};
@@ -214,6 +219,7 @@ async fn main() -> std::io::Result<()> {
                 cache: cache.clone(),
             }))
             .service(autocomplete)
+            .service(healthcheck)
     })
     .bind(config.server_addr.clone())?
     .run()
